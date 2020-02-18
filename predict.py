@@ -49,7 +49,7 @@ def getDfFromSql(sql_query, connection):
 	return pd.read_sql(sql=sql_query, con=connection)
 
 def main():
-	db = createConnection(host='localhost', username='root', password='', db='sanapi', charset='utf8mb4')
+	db = createConnection(host='localhost', username='root', password='root', db='sanapi', charset='utf8mb4')
 	cursor = db.cursor()
 	# connection = db.cursor()
 	df_hotels = getDfFromSql(sql_query="SELECT * FROM sandata", connection=db)
@@ -96,14 +96,17 @@ def main():
 
     # -------------------------------------- #
 
+	
+	dataid = sys.argv[1]
+	
 	#hotelname = "Crystal Palace Luxury Resort & Spa - Ultra All Inclusive"
-	hotelname = sys.argv[1]
+	hotelname = sys.argv[2]
 
 	#departureDate = '2022-09-12'
-	departureDate = sys.argv[2]
+	departureDate = sys.argv[3]
 
 	#returnDate = '2022-09-17'
-	returnDate = sys.argv[3]
+	returnDate = sys.argv[4]
 
 	# -------------------------------------- #
 
@@ -118,7 +121,7 @@ def main():
 	prediction = reg.predict(d)
 	#print('Prediction:',prediction[0])
 
-	cursor.execute('INSERT INTO predictions VALUES(%s,%s,%s)', (None, 20, float(prediction[0])))
+	cursor.execute('INSERT INTO predictions VALUES(%s,%s,%s)', (None, dataid, float(prediction[0])))
 	db_last_req_id = cursor.lastrowid
 	db.commit()
 
@@ -128,8 +131,3 @@ def main():
 
 if __name__ == '__main__':
 	main()
-#trained_model = pickle.dumps(reg)
-	# sql = "insert into predictions values (%s,%s,%f)"
-#conn = db.cursor()
-#conn.execute(sql, (1, 'Linear_Regression', trained_model,))
-
