@@ -51,9 +51,9 @@ def getDfFromSql(sql_query, connection):
 def main():
 	db = createConnection(host='localhost', username='root', password='', db='sanapi', charset='utf8mb4', cursorclass=pymysql.cursors.DictCursor)
 	# connection = db.cursor()
+	
+	#df_hotels = pd.read_csv("../data/append.csv")
 	df_hotels = getDfFromSql(sql_query="SELECT * FROM sandata", connection=db)
-	print(df_hotels.info())
-	#df_hotels = pd.read_sql(sql="SELECT * FROM sandata", con=db)
 
 	# Filter out the data to be consist of only numerical values
 	cat_df_hotels = df_hotels.select_dtypes(exclude=['object', 'bool']).copy()
